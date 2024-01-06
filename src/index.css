@@ -1,13 +1,147 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.container {
+  background-color: black;
+  color: white;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  z-index: 0;
+}
+.header {
+  background-color: rgba(0, 0, 0, 0);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 150px;
+}
+
+.logo {
+  width: 60px;
+}
+
+.nav-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-left span {
+  font-weight: 800;
+  margin-left: 20px;
+  font-size: 30px;
+}
+
+.button-connect {
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 32px;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.content {
+  position: relative;
+  color: white;
+  padding: 35px 50px;
+}
+
+.title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 50px;
+}
+
+.card-item {
+  background-color: rgba(134, 134, 134, 0.1);
+  border-radius: 24px;
+  color: white;
+  padding: 30px;
+}
+
+.card-logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.card-logo img {
+  width: 90px;
+  border-radius: 50%;
+}
+
+.card-logo .tag {
+  padding: 10px 20px;
+  border-radius: 32px;
+  background-color: transparent;
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.card-title {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 32px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.card-content {
+  font-size: 24px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card-button {
+  padding-top: 30px;
+  text-align: right;
+}
+.button-detail {
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 32px;
+  font-weight: 800;
+  font-size: 15px;
+  background-color: transparent;
+  color: white;
+}
+
+.section-see {
+  text-align: center;
+}
+
+.section-see .button-see {
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 32px;
+  font-weight: 800;
+  font-size: 15px;
 }

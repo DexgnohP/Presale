@@ -51,7 +51,7 @@ code {
 .nav-left span {
   font-weight: 800;
   margin-left: 20px;
-  font-size: 30px;
+  font-size: 1.4rem;
 }
 
 .button-connect {
@@ -59,7 +59,7 @@ code {
   padding: 10px 20px;
   border-radius: 32px;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 1rem;
 }
 
 .content {
@@ -71,7 +71,7 @@ code {
 .title {
   text-align: center;
   font-weight: 700;
-  font-size: 50px;
+  font-size: 2.8rem;
 }
 
 .card-item {
@@ -96,14 +96,14 @@ code {
   padding: 10px 20px;
   border-radius: 32px;
   background-color: transparent;
-  font-size: 20px;
+  font-size: 1.2rem;
   margin-left: 20px;
 }
 
 .card-title {
   margin-top: 10px;
   font-weight: 700;
-  font-size: 32px;
+  font-size: 2rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1; /* number of lines to show */
@@ -112,7 +112,7 @@ code {
 }
 
 .card-content {
-  font-size: 24px;
+  font-size: 1rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* number of lines to show */
@@ -129,7 +129,7 @@ code {
   padding: 10px 20px;
   border-radius: 32px;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 1rem;
   background-color: transparent;
   color: white;
 }
@@ -144,4 +144,205 @@ code {
   border-radius: 32px;
   font-weight: 800;
   font-size: 15px;
+  border: none;
+  color: white;
+  background: linear-gradient(267deg, #00ffa3 0%, #dc1fff 100%);
+}
+
+.section-see .button-see:hover {
+  color: white !important;
+}
+
+.modal-card .ant-modal-content {
+  background-color: black !important;
+  color: white;
+}
+
+.modal-card .ant-modal-content .ant-modal-title {
+  background-color: black !important;
+  color: white;
+}
+
+.modal-card .ant-modal-content .ant-modal-close-icon {
+  color: white;
+}
+
+.confirm-button {
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 32px;
+  font-weight: 800;
+  font-size: 1rem;
+  border: none;
+  color: white;
+  background: linear-gradient(267deg, #00ffa3 0%, #dc1fff 100%);
+}
+
+.confirm-button:hover {
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+.container-modal {
+  display: flex;
+  padding: 40px 0px;
+}
+
+.container-modal img {
+  width: 200px;
+  border-radius: 50%;
+}
+
+.container-modal .modal-left {
+  display: flex;
+  flex-basis: 45%;
+  align-items: center;
+  flex-direction: column;
+  border-right: 2px solid white;
+}
+
+.container-modal .modal-right {
+  display: flex;
+  flex-basis: 55%;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.container-modal .modal-left .title {
+  margin-top: 30px;
+  display: flex;
+  text-align: center;
+}
+
+.container-modal .modal-right .tag {
+  padding: 10px 20px;
+  border-radius: 32px;
+  background-color: transparent;
+  font-size: 1.2rem;
+  margin-left: 20px;
+}
+.container-modal .modal-left .social {
+  margin-top: 15px;
+  display: flex;
+  width: 70%;
+  justify-content: space-around;
+}
+.container-modal .modal-left .social img {
+  width: 50px;
+}
+
+.container-modal .modal-right .status {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 30px 0px;
+}
+
+.container-modal .modal-right .limit {
+  font-size: 1.2rem;
+}
+
+.container-modal .modal-right .buy-presale {
+  display: flex;
+  margin-top: 30px;
+}
+
+.container-modal
+  .modal-right
+  .buy-presale
+  .input-sol
+  .ant-input-number-input-wrap,
+input {
+  height: 100% !important;
+}
+
+.container-modal .modal-right .buy-presale .input-sol {
+  flex-basis: 30%;
+  border-radius: 8px;
+}
+
+.container-modal .modal-right .description {
+  font-size: 1.2rem;
+}
+.container-modal .modal-right .time-count {
+  font-size: 1.2rem;
+}
+
+.clock-day:before {
+  content: var(--timer-day);
+}
+.clock-hours:before {
+  content: var(--timer-hours);
+}
+.clock-minutes:before {
+  content: var(--timer-minutes);
+}
+.clock-seconds:before {
+  content: var(--timer-seconds);
+}
+.clock-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: #080808;
+  border-radius: 16px;
+  padding: 10px;
+  background: linear-gradient(267deg, #00ffa3 0%, #dc1fff 100%);
+  box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.15),
+    0 15px 90px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clock-col {
+  text-align: center;
+  margin-right: 30px;
+  margin-left: 30px;
+  min-width: 90px;
+  position: relative;
+}
+.clock-col:not(:last-child):before,
+.clock-col:not(:last-child):after {
+  content: "";
+  background-color: rgba(255, 255, 255, 0.3);
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  display: block;
+  top: -10px;
+  position: absolute;
+  right: -42px;
+}
+.clock-col:not(:last-child):before {
+  top: 35%;
+}
+.clock-col:not(:last-child):after {
+  top: 50%;
+}
+.clock-timer {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+.clock-label {
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin: 0;
+}
+@media (max-width: 825px) {
+  .clock-container {
+    flex-direction: column;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .clock-col + .clock-col {
+    margin-top: 20px;
+  }
+  .clock-col:before,
+  .clock-col:after {
+    display: none !important;
+  }
 }

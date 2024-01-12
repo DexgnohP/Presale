@@ -29,21 +29,22 @@ export default function Card({ data }) {
         setIsModalOpen(false);
     };
 
+
     useEffect(() => {
         if (Object.keys(data).length) {
             const databaseRef = ref(database)
             get(child(databaseRef, data.table)).then((snapshot) => {
                 if (snapshot.exists()) {
                     let total = 0
+                    let end = snapshot.val().end || false
                     Object.values(snapshot.val()).forEach(item => {
-                        total += item.sol
+                        if (Object.keys(item).length)
+                            total += item.sol
                     })
-                    console.log(total);
                     setTotalRaised(total)
-                    if (total > data.totalRaised) {
+                    if (end || total > data.totalRaised) {
                         setStatus("End")
                     } else {
-                        console.log("ádasdasds");
                         mapStatus()
                     }
                 } else {
@@ -77,13 +78,14 @@ export default function Card({ data }) {
                 const databaseRef = ref(database)
                 get(child(databaseRef, data.table)).then((snapshot) => {
                     if (snapshot.exists()) {
+                        let end = snapshot.val().end || false
                         let total = 0
                         Object.values(snapshot.val()).forEach(item => {
-                            total += item.sol
+                            if (Object.keys(item).length)
+                                total += item.sol
                         })
-                        console.log(total);
                         setTotalRaised(total)
-                        if (total > data.totalRaised) {
+                        if (end || total > data.totalRaised) {
                             clearInterval(intervalIdEnd);
                             setStatus("End")
                         }

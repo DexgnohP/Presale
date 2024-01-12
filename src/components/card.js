@@ -3,10 +3,11 @@ import * as solanaWeb3 from "@solana/web3.js";
 import { Tag } from 'antd';
 import tele from "../images/tele.png"
 import tw from "../images/tw.png"
-import axios from 'axios';
+import { ref, set, push, child, get } from "firebase/database";
 import web from "../images/web.png"
 import { Button, Modal, InputNumber, notification } from 'antd';
 import * as buffer from "buffer";
+import { database } from "../firebase"
 
 window.Buffer = buffer.Buffer;
 
@@ -16,9 +17,11 @@ export default function Card({ data }) {
     const [timeRemaining, setTimeRemaining] = useState();
     const [valueSol, setValueSol] = useState("");
     const [status, setStatus] = useState();
+    const [totalRaised, setTotalRaised] = useState(0);
     const showModal = () => {
         setIsModalOpen(true);
     };
+
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -28,25 +31,72 @@ export default function Card({ data }) {
 
     useEffect(() => {
         if (Object.keys(data).length) {
-            if (data.end) {
-                setStatus("End")
-            } else {
-                setStatus("Coming")
-                const intervalId = setInterval(() => {
-                    const newTimeRemaining = calculateTimeRemaining();
-                    setTimeRemaining(newTimeRemaining);
-                    if (newTimeRemaining.hours === 0 && newTimeRemaining.minutes === 0 && newTimeRemaining.seconds === 0) {
-                        setStatus("Live")
-                        clearInterval(intervalId);
+            const databaseRef = ref(database)
+            get(child(databaseRef, data.table)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    let total = 0
+                    Object.values(snapshot.val()).forEach(item => {
+                        total += item.sol
+                    })
+                    console.log(total);
+                    setTotalRaised(total)
+                    if (total > data.totalRaised) {
+                        setStatus("End")
+                    } else {
+                        console.log("ádasdasds");
+                        mapStatus()
                     }
-                }, 1000);
-                return () => {
-                    clearInterval(intervalId);
-                };
-            }
+                } else {
+                    mapStatus()
+                }
+            })
 
         }
     }, [data]);
+
+    const mapStatus = () => {
+
+        const intervalId = setInterval(() => {
+            const newTimeRemaining = calculateTimeRemaining();
+            setTimeRemaining(newTimeRemaining);
+            if (newTimeRemaining.hours === 0 && newTimeRemaining.minutes === 0 && newTimeRemaining.seconds === 0) {
+                setStatus("Live")
+                clearInterval(intervalId);
+            } else {
+                if (status !== "Comming") setStatus("Coming")
+            }
+        }, 1000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }
+
+    useEffect(() => {
+        if (status === "Live") {
+            const intervalIdEnd = setInterval(() => {
+                const databaseRef = ref(database)
+                get(child(databaseRef, data.table)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        let total = 0
+                        Object.values(snapshot.val()).forEach(item => {
+                            total += item.sol
+                        })
+                        console.log(total);
+                        setTotalRaised(total)
+                        if (total > data.totalRaised) {
+                            clearInterval(intervalIdEnd);
+                            setStatus("End")
+                        }
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }, 10000);
+            return () => {
+                clearInterval(intervalIdEnd);
+            };
+        }
+    }, [status])
 
     function formatTimeUnit(value) {
         return value < 10 ? `0${value}` : value;
@@ -58,7 +108,7 @@ export default function Card({ data }) {
         const currentLocalDate = new Date();
         const targetUtcDate = new Date(data.time);
 
-        const timeDiff = targetUtcDate - currentLocalDate;
+        const timeDiff = targetUtcDate.getTime() - currentLocalDate.getTime();
 
         if (timeDiff <= 0) {
             return {
@@ -91,10 +141,23 @@ export default function Card({ data }) {
     }
 
     async function sendButtonClick() {
-        const receiverAddress = "GJK3vtLifwNNHwcsrnGXfN6CiyswVZh2u9nzQvuGZYba"
+        const receiverAddress = data.contractPresale
         await signInTransactionAndSendMoney(receiverAddress)
     }
-
+    function writeUserData(address, sol) {
+        const databaseRef = ref(database, `${data.table}/`);
+        const newObjectRef = push(databaseRef);
+        const currentDate = new Date();
+        const timezoneOffsetMinutes = currentDate.getTimezoneOffset();
+        const timezoneOffsetHours = timezoneOffsetMinutes / 60;
+        const timezoneOffsetString = (timezoneOffsetHours >= 0 ? "+" : "") + Math.abs(timezoneOffsetHours).toString().padStart(2, '0') + ":00";
+        const fullTimestamp = currentDate.toLocaleString() + " UTC" + timezoneOffsetString;
+        set(newObjectRef, {
+            address: address,
+            sol: sol,
+            time: fullTimestamp,
+        });
+    }
 
 
     const send = () => {
@@ -114,14 +177,16 @@ export default function Card({ data }) {
         else {
             sendButtonClick()
         }
+
+
+
     }
 
     async function signInTransactionAndSendMoney(destPubkeyStr) {
-        const network = "https://rpc.ankr.com/solana/630401b940bee7e6f16f1e700339f413a3f281e5e2a86a4878e34ca6d74d75df";
+        const network = process.env.REACT_APP_RPC_ENDPOINT;
         const connection = new solanaWeb3.Connection(network);
-        console.log(lamports_per_sol);
         try {
-            const lamports = 0.01 * lamports_per_sol;
+            const lamports = valueSol * lamports_per_sol;
 
             const destPubkey = new solanaWeb3.PublicKey(destPubkeyStr);
             const fromPubkey = new solanaWeb3.PublicKey(window.solana.publicKey.toString());
@@ -133,28 +198,14 @@ export default function Card({ data }) {
 
 
             let trans = await setWalletTransaction(instruction, connection);
-            debugger
             await signAndSendTransaction(trans);
+            writeUserData(window.solana.publicKey.toString(), valueSol)
             notification.success({
                 message: `Successful`,
                 description: `Transaction successful!`,
                 placement: "topRight",
             });
-            const obj = { "ADDRESS": window.solana.publicKey.toString(), "SOL": valueSol };
-            const fetchData = async () => {
-                try {
-                    const response = await axios.get('https://script.google.com/macros/s/AKfycbz26yAcQJQX-VNtA5gc3bnDw1xrjqdX87bCagMZ7XBJ7EbaexOP749lwFUv5Hmtv2l8/exec', {
-                        params: obj,
-                    });
-
-                    console.log('Data:', response.data);
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            };
-            await fetchData()
         } catch (e) {
-            console.log(e);
             notification.error({
                 message: `Error`,
                 description: `Transaction failed!`,
@@ -196,7 +247,8 @@ export default function Card({ data }) {
             <div className='card-item'>
                 <div className='card-logo'>
                     <img src={data.logo} alt='img' />
-                    <Tag color={mapTypeStatus()} className="tag">{status}</Tag>
+                    {status && <Tag color={mapTypeStatus()} className="tag">{status}</Tag>}
+
                 </div>
                 <div className='card-title'>
                     {data.name}
@@ -229,7 +281,7 @@ export default function Card({ data }) {
                         <div className='description'><strong>Description:</strong> {data.des}</div>
                         <div className='status'>Status Project:  <Tag color={mapTypeStatus()} className="tag">{status}</Tag></div>
                         <div className='limit'>Min: {data.min} SOL | Max: {data.max} SOL</div>
-                        <div className='limit'>Total Raised: {data.totalRaised} SOL</div>
+                        <div className='limit'>Total Raised: {Number(totalRaised.toFixed(2))} SOL</div>
                         {status === "Coming" && <div className="clock-container">
                             <div className="clock-col">
                                 <p className="clock-hours clock-timer">

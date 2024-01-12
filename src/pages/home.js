@@ -1,9 +1,8 @@
 import React from 'react'
 import { Button } from 'antd';
-
 import background from "../images/background.jpg"
 import logo from "../images/logo.png"
-import dragon from "../images/dragon.png"
+import yasuo from "../images/yasuo.png"
 import { List } from 'antd';
 import Card from '../components/card';
 
@@ -12,24 +11,23 @@ export default function Home() {
     const data = [
         {
             id: 1,
-            name: "Dragon",
-            logo: dragon,
-            des: "Slaying 2024 with Dragon Memecoin: Soaring into the New Year!",
-            end: false,
+            table: "yasuo",
+            name: "亚索",
+            logo: yasuo,
+            des: "Welcome to Yasuo Finance - where financial winds blow in your favor!",
             min: 1,
             max: 5,
-            time: "2024-01-09T13:00:00Z",
-            totalRaised: 200,
-            tele: "https://t.me/DragonYearx2024",
-            tw: "https://twitter.com/LONGx2024",
-            web: "https://dragon2024.net/",
-            contractPresale: "GJK3vtLifwNNHwcsrnGXfN6CiyswVZh2u9nzQvuGZYba",
-            driveSheet: "https://docs.google.com/spreadsheets/d/1otIVLjf2_QdNSFWc4M1e-15Eu0LRu00a_0RmSEkzMEU/edit?pli=1#gid=0",
+            time: "2024-01-11T13:20:00Z",
+            totalRaised: 1,
+            tele: "https://t.me/Yasuo_Finance",
+            tw: "https://twitter.com/Yasuo_Finance",
+            web: "https://yasuofinance.xyz/",
+            contractPresale: "Ay7U1aiqb2SqWEQExPfYsxuzskjZwFdQdcapxZYYeqgU",
         },
     ];
 
     const connect = () => {
-        if (window.solana && window.solana.isPhantom) {
+        if (window.solana && window.solana.isPhantom && !window.solana.publicKey) {
             window.solana.connect()
                 .then(() => {
                     const publicKey = window.solana.publicKey.toString();
@@ -39,6 +37,15 @@ export default function Home() {
                 })
                 .catch((error) => {
                     console.error(`Unable to connect Phantom wallet: ${error.message}`);
+                });
+        } else {
+            window.solana.disconnect()
+                .then(() => {
+                    const button = document.getElementById('connectButton');
+                    button.textContent = `Connect Wallet`;
+                })
+                .catch((error) => {
+                    console.error(`Unable to disconnect Phantom wallet: ${error.message}`);
                 });
         }
     }

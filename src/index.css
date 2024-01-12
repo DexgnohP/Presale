@@ -35,7 +35,8 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 150px;
+  /* padding: 15px 150px; */
+  padding: 1rem 3%;
 }
 
 .logo {
@@ -344,5 +345,13 @@ input {
   .clock-col:before,
   .clock-col:after {
     display: none !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .container-modal {
+    flex-direction: column;
+  }
+  .container-modal .modal-left {
+    border: 0;
   }
 }
